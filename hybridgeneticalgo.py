@@ -88,11 +88,11 @@ def select_top_population(Generation, fitness_dict):
     return top_population
 
 
-def encode_numbers_in_circuits(numbers):
+def encode_numbers_in_circuits(numbers, qubits):
     circuits = []
 
     for num in numbers:
-        circuit = QuantumCircuit(7, 7)
+        circuit = QuantumCircuit(qubits, qubits)
         
         binary_num = bin(num)[2:].zfill(5)
         for bit_idx, bit in enumerate(binary_num):
