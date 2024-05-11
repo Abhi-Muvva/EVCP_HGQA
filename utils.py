@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import random
 from prettytable import PrettyTable
 import pandas as pd
+import math
 
 # Function to generate random co-ordinates
 def generate_random_coordinates(X_MIN, X_MAX, Y_MIN, Y_MAX, n):
@@ -188,3 +189,46 @@ def display_fitness_table(fitness_dict):
         print(table)
     else:
         print("Summary dictionary is empty.")
+
+def calculate_avg_distance_to_boundary_midpoint(boundaries, points_of_interest, i):
+    """
+    Calculate the average distance from points of interest to the middle point of each boundary.
+    
+    Args:
+        boundaries (dict): A dictionary containing boundary coordinates.
+        interest_x (list or tuple): A list or tuple of x-coordinates for points of interest.
+        interest_y (list or tuple): A list or tuple of y-coordinates for points of interest.
+        
+    Returns:
+        None (prints the average distance for each boundary)
+    """
+    interest_x, interest_y = zip(*points_of_interest)
+    
+    # Function to calculate Euclidean distance between two points
+    def euclidean_distance(x1, y1, x2, y2):
+        return math.sqrt((x1 - x2)**2 + (y1 - y2)**2)
+    
+
+    x_start, x_end, y_start, y_end = boundaries[i]['x_start'], boundaries[i]['x_end'], boundaries[i]['y_start'], boundaries[i]['y_end']
+        
+     # Calculate the middle point of the boundary
+    middle_x = (x_start + x_end) / 2
+    middle_y = (y_start + y_end) / 2
+        
+    # Initialize variables to store total distance and count
+    total_distance = 0
+    count = 0
+        
+    # Calculate distance from each point of interest to the middle point of the boundary
+    for x, y in zip(interest_x, interest_y):
+        # Calculate distance from the point to the middle point
+        distance = euclidean_distance(x, y, middle_x, middle_y)
+            
+        # Update total distance and count
+        total_distance += distance
+        count += 1
+        
+    # Calculate average distance
+    avg_distance = total_distance / count
+    print(f"Average distance from points of interest to the middle point of boundary {i}: {avg_distance}")
+    return avg_distance
